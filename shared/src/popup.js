@@ -286,7 +286,7 @@ async function setup() {
     }
   });
 
-  var preferredLangList = [];
+  let preferredLangList = [];
 
   const languageList = {
     DOC: 'Document Language',
@@ -326,7 +326,7 @@ async function setup() {
     event.preventDefault();
     event.stopPropagation();
 
-    if (languageListSelect.value == 'ALL') {
+    if (languageListSelect.value === 'ALL') {
       preferredLangList = [];
       drawPreferredLangs();
       return;
@@ -627,7 +627,7 @@ async function setup() {
     for (let i = 0; i < targetLanguageSelect.options.length; i++) {
       if (
         preferredLangList.includes(targetLanguageSelect.options[i].value) ||
-        preferredLangList.length == 0
+        preferredLangList.length === 0
       ) {
         targetLanguageSelect.options[i].style.display = '';
       } else {
@@ -656,7 +656,7 @@ async function setup() {
 
   // create options for language list
   for (const code in languageList) {
-    if (languageList.hasOwnProperty(code)) {
+    if (Object.hasOwn(languageList, code)) {
       const option = document.createElement('option');
       option.value = code;
       option.textContent = languageList[code];
