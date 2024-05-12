@@ -180,15 +180,11 @@ async function setup() {
     return;
   }
 
-
-
-
   const languageListSelect = document.querySelector('#language_list');
   if (!languageListSelect) {
     console.error('Could not find #languageListSelect');
     return;
   }
-
 
   const targetLanguageSelect = document.querySelector('#target_language');
   if (!targetLanguageSelect) {
@@ -196,14 +192,19 @@ async function setup() {
     return;
   }
 
-  const preferredLanguagesParam = document.querySelector('#preferred_language_param');
+  const preferredLanguagesParam = document.querySelector(
+    '#preferred_language_param',
+  );
 
   if (!preferredLanguagesParam) {
     console.error('couldn\t find preferredLanguagesParam');
     return;
   }
 
-  preferredLanguagesParam.addEventListener('click', toggleLanguagePreferenceDisplay)
+  preferredLanguagesParam.addEventListener(
+    'click',
+    toggleLanguagePreferenceDisplay,
+  );
 
   const engineSelect = document.querySelector('#engine');
   if (!engineSelect) {
@@ -233,9 +234,11 @@ async function setup() {
     return;
   }
 
-  const preferredLanguageSettings =  document.querySelector('#preferred_language_settings');
+  const preferredLanguageSettings = document.querySelector(
+    '#preferred_language_settings',
+  );
   if (!preferredLanguageSettings) {
-    console.error('can\'t find preferredLanguageSettings');
+    console.error("can't find preferredLanguageSettings");
     return;
   }
 
@@ -286,40 +289,38 @@ async function setup() {
   var preferredLangList = [];
 
   const languageList = {
-              "DOC": "Document Language",
-              "BG": "Bulgarian",
-              "CS": "Czech",
-              "DA": "Danish",
-              "DE": "German",
-              "EL": "Greek",
-              "EN": "English",
-              "ES": "Spanish",
-              "ET": "Estonian",
-              "FI": "Finnish",
-              "FR": "French",
-              "HU": "Hungarian",
-              "ID": "Indonesian",
-              "IT": "Italian",
-              "JA": "Japanese",
-              "KO": "Korean",
-              "LT": "Lithuanian",
-              "LV": "Latvian",
-              "NB": "Norwegian",
-              "NL": "Dutch",
-              "PL": "Polish",
-              "PT": "Portuguese",
-              "RO": "Romanian",
-              "RU": "Russian",
-              "SK": "Slovak",
-              "SL": "Slovenian",
-              "SV": "Swedish",
-              "TR": "Turkish",
-              "UK": "Ukrainian",
-              "ZH": "Chinese (simplified)",
-              "ZH-HANT": "Chinese (traditional)",
-  }
-
-
+    DOC: 'Document Language',
+    BG: 'Bulgarian',
+    CS: 'Czech',
+    DA: 'Danish',
+    DE: 'German',
+    EL: 'Greek',
+    EN: 'English',
+    ES: 'Spanish',
+    ET: 'Estonian',
+    FI: 'Finnish',
+    FR: 'French',
+    HU: 'Hungarian',
+    ID: 'Indonesian',
+    IT: 'Italian',
+    JA: 'Japanese',
+    KO: 'Korean',
+    LT: 'Lithuanian',
+    LV: 'Latvian',
+    NB: 'Norwegian',
+    NL: 'Dutch',
+    PL: 'Polish',
+    PT: 'Portuguese',
+    RO: 'Romanian',
+    RU: 'Russian',
+    SK: 'Slovak',
+    SL: 'Slovenian',
+    SV: 'Swedish',
+    TR: 'Turkish',
+    UK: 'Ukrainian',
+    ZH: 'Chinese (simplified)',
+    'ZH-HANT': 'Chinese (traditional)',
+  };
 
   async function preferredLangAdd(event) {
     event.preventDefault();
@@ -333,7 +334,7 @@ async function setup() {
     if (preferredLangList.includes(languageListSelect.value)) {
       return;
     }
-    preferredLangList.push(languageListSelect.value)
+    preferredLangList.push(languageListSelect.value);
     drawPreferredLangs();
   }
 
@@ -352,12 +353,10 @@ async function setup() {
     }
   }
 
-
   async function toggleAdvancedDisplay(forceState) {
     const icons = advancedToggle.querySelectorAll('svg');
     const showSettingsIcon = icons[0];
     const closeSettingsIcon = icons[1];
-
 
     if (forceState === 'close' || tokenDiv.style.display === '') {
       showSettingsIcon.style.display = '';
@@ -392,9 +391,6 @@ async function setup() {
     }
   }
   advancedToggle.addEventListener('click', () => toggleAdvancedDisplay());
-
-
-
 
   async function handleSummarizePageButtonClick(event) {
     event.preventDefault();
@@ -542,11 +538,8 @@ async function setup() {
         targetLanguageSelect.value = target_language;
       }
       if (preferred_languages) {
-	preferredLangList = preferred_languages;
+        preferredLangList = preferred_languages;
       }
-
-      
-
 
       const hasIncognitoAccess =
         await browser.extension.isAllowedIncognitoAccess();
@@ -605,7 +598,8 @@ async function setup() {
 
     if (!IS_CHROME) {
       const incognitoNameSpan = saveErrorDiv.querySelector('span');
-      if (incognitoNameSpan) { incognitoNameSpan.innerText = 'Run in Private Windows';
+      if (incognitoNameSpan) {
+        incognitoNameSpan.innerText = 'Run in Private Windows';
       }
     }
 
@@ -613,8 +607,10 @@ async function setup() {
   }
 
   function drawPreferredLangs() {
-    let preferredLangListSection = document.querySelector('#preferred_lang_list');
-    let preferredLangReadable = [];
+    const preferredLangListSection = document.querySelector(
+      '#preferred_lang_list',
+    );
+    const preferredLangReadable = [];
     if (preferredLangList.length > 0) {
       preferredLanguageSettings.style.display = '';
       preferredLanguagesParam.checked = true;
@@ -622,39 +618,41 @@ async function setup() {
 
     preferredLangList.forEach((element) => {
       if (languageList[element]) {
-	preferredLangReadable.push(languageList[element]);
+        preferredLangReadable.push(languageList[element]);
       }
-      preferredLangReadable
+      preferredLangReadable;
     });
     preferredLangListSection.innerText = preferredLangReadable.join(', ');
 
     for (let i = 0; i < targetLanguageSelect.options.length; i++) {
-      if (preferredLangList.includes(targetLanguageSelect.options[i].value) || preferredLangList.length == 0) {
-	targetLanguageSelect.options[i].style.display = '';
+      if (
+        preferredLangList.includes(targetLanguageSelect.options[i].value) ||
+        preferredLangList.length == 0
+      ) {
+        targetLanguageSelect.options[i].style.display = '';
       } else {
-	targetLanguageSelect.options[i].style.display = 'none';
+        targetLanguageSelect.options[i].style.display = 'none';
       }
     }
-
-
   }
 
-
-
-  const preferredLangResetButton = document.querySelector('#preferred_language_reset');
+  const preferredLangResetButton = document.querySelector(
+    '#preferred_language_reset',
+  );
   if (!preferredLangResetButton) {
     console.error('Could not find #preferred_language_reset');
     return;
   }
   preferredLangResetButton.addEventListener('click', preferredLangReset);
 
-  const preferredLangAddButton = document.querySelector('#preferred_language_add');
+  const preferredLangAddButton = document.querySelector(
+    '#preferred_language_add',
+  );
   if (!preferredLangAddButton) {
     console.error('Could not find #preferred_language_add');
     return;
   }
   preferredLangAddButton.addEventListener('click', preferredLangAdd);
-
 
   // create options for language list
   for (const code in languageList) {
@@ -665,7 +663,6 @@ async function setup() {
       languageListSelect.appendChild(option);
     }
   }
-
 
   browser.runtime.onMessage.addListener(async (data) => {
     if (data.type === 'synced') {

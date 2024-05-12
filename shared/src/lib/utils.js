@@ -106,7 +106,9 @@ export async function fetchSettings() {
   const apiObject = await browser.storage.local.get('api_token');
   const apiEngineObject = await browser.storage.local.get('api_engine');
   const summaryTypeObject = await browser.storage.local.get('summary_type');
-  const preferredLanguageList = await browser.storage.local.get('preferred_languages');
+  const preferredLanguageList = await browser.storage.local.get(
+    'preferred_languages',
+  );
 
   const targetLanguageObject =
     await browser.storage.local.get('target_language');

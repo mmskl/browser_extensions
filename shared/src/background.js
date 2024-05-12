@@ -19,11 +19,17 @@ if (typeof browser.runtime.getBrowserInfo === 'function') {
 }
 
 async function saveToken(
-  { token, api_token, api_engine, sync, summary_type, target_language, preferred_languages } = {},
+  {
+    token,
+    api_token,
+    api_engine,
+    sync,
+    summary_type,
+    target_language,
+    preferred_languages,
+  } = {},
   isManual = false,
 ) {
-
-
   sessionToken = typeof token !== 'undefined' ? token : sessionToken;
   sessionApiToken =
     typeof api_token !== 'undefined' ? api_token : sessionApiToken;
@@ -35,7 +41,10 @@ async function saveToken(
     typeof target_language !== 'undefined'
       ? target_language
       : sessionTargetLanguage;
-  sessionPreferredLanguages = typeof preferred_languages !== 'undefined' ? preferred_languages : sessionPreferredLanguages;
+  sessionPreferredLanguages =
+    typeof preferred_languages !== 'undefined'
+      ? preferred_languages
+      : sessionPreferredLanguages;
 
   let shouldSync = sync || !isManual;
   if (typeof sessionToken === 'undefined' || sessionToken.trim().length === 0) {
