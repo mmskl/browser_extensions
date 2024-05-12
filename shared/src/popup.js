@@ -180,11 +180,30 @@ async function setup() {
     return;
   }
 
+
+
+
+  const languageListSelect = document.querySelector('#language_list');
+  if (!languageListSelect) {
+    console.error('Could not find #languageListSelect');
+    return;
+  }
+
+
   const targetLanguageSelect = document.querySelector('#target_language');
   if (!targetLanguageSelect) {
     console.error('No target language select found.');
     return;
   }
+
+  const preferredLanguagesParam = document.querySelector('#preferred_language_param');
+
+  if (!preferredLanguagesParam) {
+    console.error('couldn\t find preferredLanguagesParam');
+    return;
+  }
+
+  preferredLanguagesParam.addEventListener('click', toggleLanguagePreferenceDisplay)
 
   const engineSelect = document.querySelector('#engine');
   if (!engineSelect) {
@@ -214,6 +233,12 @@ async function setup() {
     return;
   }
 
+  const preferredLanguageSettings =  document.querySelector('#preferred_language_settings');
+  if (!preferredLanguageSettings) {
+    console.error('can\'t find preferredLanguageSettings');
+    return;
+  }
+
   const saveErrorDiv = document.querySelector('#save_error');
   if (!saveErrorDiv) {
     console.error('Could not find save error div');
@@ -237,6 +262,7 @@ async function setup() {
     const summary_type = summaryTypeSelect.value;
 
     const target_language = targetLanguageSelect.value;
+    const preferred_languages = preferredLangList;
 
     saveTokenButton.innerText = 'Saving...';
 
@@ -248,6 +274,7 @@ async function setup() {
         api_engine,
         summary_type,
         target_language,
+        preferred_languages,
       });
     } catch (error) {
       console.error(error);
@@ -256,10 +283,81 @@ async function setup() {
     }
   });
 
+  var preferredLangList = [];
+
+  const languageList = {
+              "DOC": "Document Language",
+              "BG": "Bulgarian",
+              "CS": "Czech",
+              "DA": "Danish",
+              "DE": "German",
+              "EL": "Greek",
+              "EN": "English",
+              "ES": "Spanish",
+              "ET": "Estonian",
+              "FI": "Finnish",
+              "FR": "French",
+              "HU": "Hungarian",
+              "ID": "Indonesian",
+              "IT": "Italian",
+              "JA": "Japanese",
+              "KO": "Korean",
+              "LT": "Lithuanian",
+              "LV": "Latvian",
+              "NB": "Norwegian",
+              "NL": "Dutch",
+              "PL": "Polish",
+              "PT": "Portuguese",
+              "RO": "Romanian",
+              "RU": "Russian",
+              "SK": "Slovak",
+              "SL": "Slovenian",
+              "SV": "Swedish",
+              "TR": "Turkish",
+              "UK": "Ukrainian",
+              "ZH": "Chinese (simplified)",
+              "ZH-HANT": "Chinese (traditional)",
+  }
+
+
+
+  async function preferredLangAdd(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (languageListSelect.value == 'ALL') {
+      preferredLangList = [];
+      drawPreferredLangs();
+      return;
+    }
+    if (preferredLangList.includes(languageListSelect.value)) {
+      return;
+    }
+    preferredLangList.push(languageListSelect.value)
+    drawPreferredLangs();
+  }
+
+  async function preferredLangReset(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    preferredLangList = [];
+    drawPreferredLangs();
+  }
+
+  async function toggleLanguagePreferenceDisplay(event) {
+    if (this.checked) {
+      preferredLanguageSettings.style.display = '';
+    } else {
+      preferredLanguageSettings.style.display = 'none';
+    }
+  }
+
+
   async function toggleAdvancedDisplay(forceState) {
     const icons = advancedToggle.querySelectorAll('svg');
     const showSettingsIcon = icons[0];
     const closeSettingsIcon = icons[1];
+
 
     if (forceState === 'close' || tokenDiv.style.display === '') {
       showSettingsIcon.style.display = '';
@@ -294,6 +392,9 @@ async function setup() {
     }
   }
   advancedToggle.addEventListener('click', () => toggleAdvancedDisplay());
+
+
+
 
   async function handleSummarizePageButtonClick(event) {
     event.preventDefault();
@@ -390,6 +491,7 @@ async function setup() {
     api_engine,
     summary_type,
     target_language,
+    preferred_languages,
   } = {}) {
     if (token) {
       tokenInput.value = token;
@@ -439,6 +541,12 @@ async function setup() {
       if (target_language) {
         targetLanguageSelect.value = target_language;
       }
+      if (preferred_languages) {
+	preferredLangList = preferred_languages;
+      }
+
+      
+
 
       const hasIncognitoAccess =
         await browser.extension.isAllowedIncognitoAccess();
@@ -497,13 +605,67 @@ async function setup() {
 
     if (!IS_CHROME) {
       const incognitoNameSpan = saveErrorDiv.querySelector('span');
-      if (incognitoNameSpan) {
-        incognitoNameSpan.innerText = 'Run in Private Windows';
+      if (incognitoNameSpan) { incognitoNameSpan.innerText = 'Run in Private Windows';
       }
     }
 
     saveErrorDiv.style.display = '';
   }
+
+  function drawPreferredLangs() {
+    let preferredLangListSection = document.querySelector('#preferred_lang_list');
+    let preferredLangReadable = [];
+    if (preferredLangList.length > 0) {
+      preferredLanguageSettings.style.display = '';
+      preferredLanguagesParam.checked = true;
+    }
+
+    preferredLangList.forEach((element) => {
+      if (languageList[element]) {
+	preferredLangReadable.push(languageList[element]);
+      }
+      preferredLangReadable
+    });
+    preferredLangListSection.innerText = preferredLangReadable.join(', ');
+
+    for (let i = 0; i < targetLanguageSelect.options.length; i++) {
+      if (preferredLangList.includes(targetLanguageSelect.options[i].value) || preferredLangList.length == 0) {
+	targetLanguageSelect.options[i].style.display = '';
+      } else {
+	targetLanguageSelect.options[i].style.display = 'none';
+      }
+    }
+
+
+  }
+
+
+
+  const preferredLangResetButton = document.querySelector('#preferred_language_reset');
+  if (!preferredLangResetButton) {
+    console.error('Could not find #preferred_language_reset');
+    return;
+  }
+  preferredLangResetButton.addEventListener('click', preferredLangReset);
+
+  const preferredLangAddButton = document.querySelector('#preferred_language_add');
+  if (!preferredLangAddButton) {
+    console.error('Could not find #preferred_language_add');
+    return;
+  }
+  preferredLangAddButton.addEventListener('click', preferredLangAdd);
+
+
+  // create options for language list
+  for (const code in languageList) {
+    if (languageList.hasOwnProperty(code)) {
+      const option = document.createElement('option');
+      option.value = code;
+      option.textContent = languageList[code];
+      languageListSelect.appendChild(option);
+    }
+  }
+
 
   browser.runtime.onMessage.addListener(async (data) => {
     if (data.type === 'synced') {
@@ -579,6 +741,7 @@ async function setup() {
       setTimeout(() => window.close(), 50); // Without this timeout, the browser opens a new window instead of a new tab
     }),
   );
+  drawPreferredLangs();
 }
 
 document.addEventListener('DOMContentLoaded', setup);
