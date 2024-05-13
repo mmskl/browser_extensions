@@ -162,29 +162,33 @@
               <option value="daphne">Daphne</option>
               <option value="muriel">Muriel</option>
             </select>
-          </div>
-        </div>
-
-	<div class="setting-row">
-	  <div class="title">
-	    Preferred languages in Universal Summarizer:
 	  </div>
-	  <div class="desc">
-	    <label for="preferred_language_param"> Enable Preferred Language</label>
-	    <input id="preferred_language_param" type="checkbox" />
-	    <div class="preferred-language-settings" id="preferred_language_settings">
-	      <p>Selected Languages: <span id="preferred_lang_list"></span></p>
-	      <label class="title" for="language_list">Select Languages:</label>
-	      <select id="language_list">
-		<option value="ALL">ALL</option>
-	      </select>
-	      <button id="preferred_language_add">Add language</button>
-	      <button id="preferred_language_reset">Reset</button>
+	</div>
+
+	<div class="setting_row">
+	  <div>
+	    <div class="title">
+	      Preferred languages in Universal Summarizer:
+	    </div>
+	    <div class="desc">
+	      <div class="form_box">
+		<input id="preferred_language_param" type="checkbox" />
+		<label for="preferred_language_param"> Enable Preferred Language</label>
+	      </div>
+	      <div class="preferred-language-settings" id="preferred_language_settings">
+		<p>Selected Languages: <span id="preferred_lang_list"></span></p>
+		<label class="title" for="language_list">Select Languages:</label>
+		<select id="language_list">
+		  <option value="ALL">ALL</option>
+		</select>
+		<button id="preferred_language_add">Add language</button>
+		<button id="preferred_language_reset">Reset</button>
+	      </div>
 	    </div>
 	  </div>
 	</div>
 
-        <div class="setting_row" style="display: none" id="save_error">
+	  <div class="setting_row" style="display: none" id="save_error">
           <div>
             <div class="title">
               Error saving token!

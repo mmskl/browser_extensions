@@ -614,6 +614,9 @@ async function setup() {
     if (preferredLangList.length > 0) {
       preferredLanguageSettings.style.display = '';
       preferredLanguagesParam.checked = true;
+    } else {
+      preferredLanguageSettings.style.display = 'none';
+      preferredLanguagesParam.checked = false;
     }
 
     preferredLangList.forEach((element) => {

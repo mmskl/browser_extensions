@@ -373,3 +373,14 @@ p {
   background-color: #f7a808;
   border: 1px solid #d9950d;
 }
+
+
+
+.form_box {
+  display: flex;
+  align-items: center;
+}
+
+#preferred_language_param {
+  width: 50px;
+}
